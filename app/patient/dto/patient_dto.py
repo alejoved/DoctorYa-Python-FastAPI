@@ -1,6 +1,7 @@
+from pydantic import BaseModel
 from app.patient.entity.patient import Patient
 
-class PatientDTO:
+class PatientDTO(BaseModel):
     identification: str
     password: str
     name: str

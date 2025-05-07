@@ -1,5 +1,6 @@
 from fastapi import Depends, FastAPI
 from app.patient.controller.patient_controller import patient_route
+from app.physician.controller.physician_controller import physician_route
 
 app = FastAPI(
     title="DoctorYa Python - FastAPI",
@@ -8,3 +9,4 @@ app = FastAPI(
 )
 
 app.include_router(patient_route)
+app.include_router(physician_route)

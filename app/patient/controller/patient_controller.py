@@ -1,12 +1,16 @@
+
+from uuid import UUID
 from fastapi import APIRouter, Depends
 
 from app.patient.dto.patient_dto import PatientDTO
+from app.patient.repository.patient_repository import PatientRepository
 from app.patient.service.patient_service import PatientService
 
 patient_route = APIRouter()
 
 def get_patient_service():
-    return PatientService()
+    patient_repository = PatientRepository()
+    return PatientService(patient_repository)
 
 @patient_route.get("/api/patient")
 def get(patient_service: PatientService = Depends(get_patient_service)):
@@ -14,7 +18,7 @@ def get(patient_service: PatientService = Depends(get_patient_service)):
     return patient_response_dto
 
 @patient_route.get("/api/patient/{id}")
-def get_by_id(id: str, patient_service: PatientService = Depends(get_patient_service)):
+def get_by_id(id: UUID, patient_service: PatientService = Depends(get_patient_service)):
     patient_response_dto = patient_service.get_by_id(id)
     return patient_response_dto
 
