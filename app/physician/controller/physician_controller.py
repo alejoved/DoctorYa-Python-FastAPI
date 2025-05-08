@@ -1,6 +1,7 @@
 from uuid import UUID
 from fastapi import APIRouter, Depends
 
+from app.auth.repository.auth_repository import AuthRepository
 from app.physician.dto.physician_dto import PhysicianDTO
 from app.physician.repository.physician_repository import PhysicianRepository
 from app.physician.service.physician_service import PhysicianService
@@ -9,7 +10,8 @@ physician_route = APIRouter()
 
 def get_physician_service():
     physician_repository = PhysicianRepository()
-    return PhysicianService(physician_repository)
+    auth_repository = AuthRepository()
+    return PhysicianService(physician_repository, auth_repository)
 
 @physician_route.get("/api/physician")
 def get(physician_service: PhysicianService = Depends(get_physician_service)):

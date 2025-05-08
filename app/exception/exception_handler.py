@@ -12,3 +12,9 @@ def entity_not_exists_exception(message: str):
         status_code=status.HTTP_404_NOT_FOUND,
         message = message
     )
+
+def credentials_not_valid_exception(message: str):
+    return HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        message = message
+    )
