@@ -17,7 +17,8 @@ class PhysicianService:
         self.pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
     
     def get(self):
-        return self.physician_repository.get()
+        physicians = self.physician_repository.get()
+        return [Mapper.physician_to_physician_response_dto(physician) for physician in physicians]
 
     def get_by_id(self, id: UUID):
         physician = self.physician_repository.get_by_id(id)

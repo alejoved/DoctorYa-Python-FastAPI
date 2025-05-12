@@ -1,9 +1,8 @@
 from uuid import UUID
 from fastapi import APIRouter, Depends
-from fastapi_jwt import JwtAuthorizationCredentials
 from app.auth.repository.auth_repository import AuthRepository
 from app.common.role import Role
-from app.config.auth_config import access_security, valid_role
+from app.config.auth_config import valid_role
 from app.patient.dto.patient_dto import PatientDTO
 from app.patient.repository.patient_repository import PatientRepository
 from app.patient.service.patient_service import PatientService
