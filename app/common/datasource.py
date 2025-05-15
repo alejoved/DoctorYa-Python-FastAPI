@@ -1,7 +1,11 @@
-from sqlalchemy import MetaData, create_engine
+import os
+from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+from dotenv import load_dotenv
 
-DATABASE_URL = "postgresql://postgres:root@localhost:5432/vision"
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATASOURCE")
 
 # Crear el motor
 engine = create_engine(DATABASE_URL)

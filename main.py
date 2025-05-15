@@ -1,3 +1,4 @@
+from dotenv import load_dotenv
 from fastapi import Depends, FastAPI
 from app.auth.controller.auth_controller import auth_route
 from app.patient.controller.patient_controller import patient_route

@@ -1,3 +1,4 @@
+from typing import List
 from uuid import UUID
 from fastapi import APIRouter, Depends
 from app.auth.repository.auth_repository import AuthRepository
@@ -13,7 +14,7 @@ def get_physician_service():
     auth_repository = AuthRepository()
     return PhysicianService(physician_repository, auth_repository)
 
-@physician_route.get("/api/physician", response_model=PhysicianResponseDTO, response_model_exclude_none=True, tags=["Physician"],
+@physician_route.get("/api/physician", response_model=List[PhysicianResponseDTO], response_model_exclude_none=True, tags=["Physician"],
                     summary="Get all physicians currently",
                     responses={200: {"description": "Get all the physicians Successfully"},
                                 500: {"description": "Internal server error"}})

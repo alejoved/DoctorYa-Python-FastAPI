@@ -1,10 +1,11 @@
+import os
 from fastapi import Depends, HTTPException, status
 from fastapi_jwt import JwtAccessBearer, JwtAuthorizationCredentials
 
 from app.common import constants
 from app.common.role import Role
 
-access_security = JwtAccessBearer(secret_key="my_secret")
+access_security = JwtAccessBearer(secret_key=os.getenv("JWT_SECRET"))
 
 def valid_role(role: Role):
     def valid(credentials: JwtAuthorizationCredentials = Depends(access_security)):

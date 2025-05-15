@@ -3,6 +3,7 @@ from uuid import UUID
 from app.auth.entity.auth import Auth
 from app.common.datasource import SessionLocal
 from app.physician.entity.physician import Physician
+from sqlalchemy.orm import joinedload
 
 @contextmanager
 def get_session():
@@ -19,7 +20,8 @@ def get_session():
 class PhysicianRepository:
     def get(self):
         with get_session() as db:
-            return db.query(Physician).all()
+            return db.query(Physician).options(
+            joinedload(Physician.auth)).all()
     
     def get_by_id(self, id: UUID):
         with get_session() as db:
