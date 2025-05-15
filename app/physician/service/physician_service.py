@@ -27,6 +27,13 @@ class PhysicianService:
         physician_response_dto = Mapper.physician_to_physician_response_dto(physician)
         return physician_response_dto
     
+    def get_by_identification(self, identification: str):
+        physician = self.physician_repository.get_by_auth_identification(identification)
+        if not physician:
+            raise entity_not_exists_exception(constants.physician_not_found)
+        physician_response_dto = Mapper.physician_to_physician_response_dto(physician)
+        return physician_response_dto
+    
     def create(self, physician_dto: PhysicianDTO):
         authExists = self.auth_repository.get_by_identification(physician_dto.identification)
         if authExists:

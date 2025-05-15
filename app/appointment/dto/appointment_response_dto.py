@@ -5,6 +5,7 @@ from app.patient.dto.patient_response_dto import PatientResponseDTO
 from app.physician.dto.physician_response_dto import PhysicianResponseDTO
 
 class AppointmentResponseDTO(BaseModel):
+    id: Optional[str] = Field(default = None, description="Appointment ID")
     start_date: Optional[datetime] = Field(default = None, description="Date for to start medical appointment", example = "2025-05-10 14:00:00")
     end_date: Optional[datetime] = Field(default = None, description="Date for to end medical appointment", example = "2025-05-10 14:20:00")
     reason: Optional[str] = Field(default = None, description="Description about the appointment")

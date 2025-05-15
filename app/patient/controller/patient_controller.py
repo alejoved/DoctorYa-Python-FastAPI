@@ -33,6 +33,24 @@ def get_by_id(id: UUID, patient_service: PatientService = Depends(get_patient_se
     patient_response_dto = patient_service.get_by_id(id)
     return patient_response_dto
 
+@patient_route.get("/api/patient/{id}", response_model=PatientResponseDTO, response_model_exclude_none=True, tags=["Patient"],
+                    summary="Get an patient existing by uuid",
+                    responses={200: {"description": "Get an patient successfully"},
+                                404: {"description": "Patient not found"}, 
+                                500: {"description": "Internal server error"}})
+def get_by_id(id: UUID, dep = Depends(valid_role(Role.ADMIN)), patient_service: PatientService = Depends(get_patient_service)):
+    patient_response_dto = patient_service.get_by_id(id)
+    return patient_response_dto
+
+@patient_route.get("/api/patient/identification/{identification}", response_model=PatientResponseDTO, response_model_exclude_none=True, tags=["Patient"],
+                    summary="Get an patient existing by identification",
+                    responses={200: {"description": "Get an patient by identification successfully"},
+                                404: {"description": "Patient not found"}, 
+                                500: {"description": "Internal server error"}})
+def get_by_identification(identification: str, patient_service: PatientService = Depends(get_patient_service)):
+    patient_response_dto = patient_service.get_by_identification(identification)
+    return patient_response_dto
+
 @patient_route.post("/api/patient", response_model=PatientResponseDTO, response_model_exclude_none=True, tags=["Patient"],
                     summary="Create a new patient associated with a identification, name and an medical code",
                     responses={200: {"description": "Patient created successfully"},

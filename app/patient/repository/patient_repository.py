@@ -25,11 +25,11 @@ class PatientRepository:
     
     def get_by_id(self, id: UUID):
         with get_session() as db:
-            return db.query(Patient).filter(Patient.id == id).first()
+            return db.query(Patient).options(joinedload(Patient.auth)).filter(Patient.id == id).first()
     
     def get_by_auth_identification(self, identification: str):
         with get_session() as db:
-            return db.query(Patient).join(Patient.auth).filter(Auth.identification == identification).first()
+            return db.query(Patient).options(joinedload(Patient.auth)).filter(Auth.identification == identification).first()
     
     def create(self, patient: Patient):
         with get_session() as db:

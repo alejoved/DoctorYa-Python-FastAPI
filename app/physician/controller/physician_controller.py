@@ -31,6 +31,15 @@ def get_by_id(id: UUID, physician_service: PhysicianService = Depends(get_physic
     physician_response_dto = physician_service.get_by_id(id)
     return physician_response_dto
 
+@physician_route.get("/api/physician/identification/{identification}", response_model=PhysicianResponseDTO, response_model_exclude_none=True, tags=["Physician"],
+                    summary="Get an physician existing by identification",
+                    responses={200: {"description": "Get an physician by identification successfully"},
+                                404: {"description": "Physician not found"}, 
+                                500: {"description": "Internal server error"}})
+def get_by_identification(identification: str, physician_service: PhysicianService = Depends(get_physician_service)):
+    physician_response_dto = physician_service.get_by_identification(identification)
+    return physician_response_dto
+
 @physician_route.post("/api/physician", response_model=PhysicianResponseDTO, response_model_exclude_none=True, tags=["Physician"],
                     summary="Create a new physician associated with a name and medical code",
                     responses={200: {"description": "Physician created successfully"},

@@ -28,6 +28,13 @@ class PatientService:
         patient_response_dto = Mapper.patient_to_patient_response_dto(patient)
         return patient_response_dto
     
+    def get_by_identification(self, identification: str):
+        patient = self.patient_repository.get_by_auth_identification(identification)
+        if not patient:
+            raise entity_not_exists_exception(constants.patient_not_found)
+        patient_response_dto = Mapper.patient_to_patient_response_dto(patient)
+        return patient_response_dto
+    
     def create(self, patient_dto: PatientDTO):
         authExists = self.auth_repository.get_by_identification(patient_dto.identification)
         if authExists:
