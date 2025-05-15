@@ -7,7 +7,7 @@ DATABASE_URL = "postgresql://postgres:root@localhost:5432/vision"
 engine = create_engine(DATABASE_URL)
 
 # Crear la fábrica de sesiones
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
 
 # Base para declarar modelos ORM
 Base = declarative_base()

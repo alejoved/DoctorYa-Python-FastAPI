@@ -71,6 +71,6 @@ class Mapper:
             start_date = appointment.start_date,
             end_date = appointment.end_date,
             reason = appointment.reason,
-            patient = appointment.patient,
-            physician = appointment.physician
+            patient = PatientResponseDTO(name = appointment.patient.name, auth = AuthResponseDTO(identification=appointment.patient.auth.identification)),
+            physician = PhysicianResponseDTO(name = appointment.physician.name, auth = AuthResponseDTO(identification=appointment.patient.auth.identification))
         )

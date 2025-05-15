@@ -38,7 +38,6 @@ class AppointmentService:
         start_date = appointment_dto.start_date
         end_date = start_date + timedelta(minutes=appointment_dto.duration)
         appointment_exists = self.appointment_repository.find_overlapping(start_date, end_date, appointment_dto.physician_identification)
-        print("AQUI VAMOS")
         if len(appointment_exists) > 0:
             raise entity_exists_exception(constants.appointment_exists)
         appointment = Mapper.appointment_dto_to_appointment(appointment_dto, end_date, patient_exists, physician_exists)

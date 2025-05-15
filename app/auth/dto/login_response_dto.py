@@ -1,7 +1,8 @@
-from pydantic import BaseModel
+from typing import Optional
+from pydantic import BaseModel, Field
 from app.common.role import Role
 
 class LoginResponseDTO(BaseModel):
-    token: str
-    role: Role
+    token: Optional[str] = Field(description="JWT Token encrypt")
+    role: Optional[Role] = Field(description="Role admin, patient, physician", example="ADMIN")
 

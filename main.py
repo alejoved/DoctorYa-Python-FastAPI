@@ -5,9 +5,9 @@ from app.physician.controller.physician_controller import physician_route
 from app.appointment.controller.appointment_controller import appointment_route
 
 app = FastAPI(
-    title="DoctorYa Python - FastAPI",
-    description="API sobre el framework FastAPI",
-    version="0.0.1"
+    title="Medical Appointment Booking API",
+    description="Medical Appointment Booking API Technical Documentation",
+    version="1.0.0"
 )
 
 app.include_router(auth_route)

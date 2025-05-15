@@ -1,7 +1,5 @@
-from pydantic import BaseModel
-
-from app.auth.entity.auth import Auth
-
+from typing import Optional
+from pydantic import BaseModel, Field
 
 class RegisterResponseDTO(BaseModel):
-    identification: str
+    identification: Optional[str] = Field(min_length= 4, description = "Primary identification for the sign up")

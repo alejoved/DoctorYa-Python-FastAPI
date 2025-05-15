@@ -1,45 +1,58 @@
+from contextlib import contextmanager
 from uuid import UUID
-
-from sqlalchemy import and_, or_
+from sqlalchemy.orm import joinedload
 from app.auth.entity.auth import Auth
 from app.common.datasource import SessionLocal
 from app.appointment.entity.appointment import Appointment
+from app.patient.entity.patient import Patient
 from app.physician.entity.physician import Physician
+
+@contextmanager
+def get_session():
+    db = SessionLocal()
+    try:
+        yield db
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        raise e
+    finally:
+        db.close()
 
 class AppointmentRepository:
     def get(self):
-        db = SessionLocal()
-        appointments = db.query(Appointment).all()
-        return appointments
+        with get_session() as db:
+            return db.query(Appointment).all()
     
     def get_by_id(self, id: UUID):
-        db = SessionLocal()
-        appointment = db.query(Appointment).filter(Appointment.id == id).first()
-        return appointment
+        with get_session() as db:
+            return db.query(Appointment).filter(Appointment.id == id).first()
     
     def find_overlapping(self, start_date, end_date, physician_identification: str):
-        db = SessionLocal()
-        appointments = db.query(Appointment).join(Appointment.physician).join(Physician.auth).filter(
-        Appointment.start_date < end_date,
-        Appointment.end_date > start_date,
-        Auth.identification == physician_identification
-        ).all()
-        return appointments
+        with get_session() as db:
+            return db.query(Appointment).join(Appointment.physician).join(Physician.auth).filter(
+            Appointment.start_date < end_date,
+            Appointment.end_date > start_date,
+            Auth.identification == physician_identification
+            ).all()
     
     def create(self, appointment: Appointment):
-        db = SessionLocal()
-        db.add(appointment)
-        db.commit()
-        db.refresh(appointment)
-        return appointment
+        with get_session() as db:
+            db.add(appointment)
+            db.flush()
+            appointment_with_relations = db.query(Appointment).options(
+            joinedload(Appointment.patient).joinedload(Patient.auth),
+            joinedload(Appointment.physician).joinedload(Physician.auth)
+            ).filter(Appointment.id == appointment.id).first()
+            return appointment_with_relations
     
     def update(self, appointment: Appointment):
-        db = SessionLocal()
-        db.commit()
-        db.refresh(appointment)
-        return appointment
+        with get_session() as db:
+            db.merge(appointment)
+            db.flush()
+            db.refresh(appointment)
+            return appointment
 
     def delete(self, appointment: Appointment):
-        db = SessionLocal()
-        db.delete(appointment)
-        db.commit()
+        with get_session() as db:
+            db.delete(appointment)

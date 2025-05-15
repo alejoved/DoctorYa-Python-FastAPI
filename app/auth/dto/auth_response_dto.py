@@ -1,4 +1,5 @@
-from pydantic import BaseModel
+from typing import Optional
+from pydantic import BaseModel, Field
 
 class AuthResponseDTO(BaseModel):
-    identification: str
+    identification: Optional[str] = Field(default = None, description="Primary identification for the admin, patient, physician")
