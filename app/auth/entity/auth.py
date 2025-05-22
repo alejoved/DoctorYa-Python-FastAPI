@@ -1,4 +1,3 @@
-import uuid
 from sqlalchemy import UUID, Column, String, Enum as SqlEnum
 from app.common.datasource import Base
 from app.common.role import Role

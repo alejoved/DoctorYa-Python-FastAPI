@@ -4,7 +4,6 @@ from app.auth.entity.auth import Auth
 from app.common.datasource import SessionLocal
 from app.invoice.entity.invoice import Invoice
 from sqlalchemy.orm import joinedload
-
 from app.invoice_detail.entity.invoice_detail import InvoiceDetail
 
 @contextmanager
