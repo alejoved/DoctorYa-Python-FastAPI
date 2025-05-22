@@ -15,7 +15,7 @@
 - tax
 - stock
 
-3. Bill.
+3. Invoice.
 - ID
 - code
 - date

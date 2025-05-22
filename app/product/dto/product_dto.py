@@ -1,11 +1,13 @@
+from typing import Optional
+from uuid import UUID
 from pydantic import BaseModel, Field
-from app.product.entity.product import Product
 
 class ProductDTO(BaseModel):
-    identification: str = Field(description = "Primary identification for the product")
-    password: str = Field(description = "Password for the log in")
-    name: str = Field(description = "Product full name")
-    code: str = Field(description = "General medical code")
-    speciality: str = Field(description = "Speciality field of the product")
+    id: Optional[UUID] = Field(description = "Primary ID", default=None)
+    name: Optional[str] = Field(description = "Primary name for the product", default=None)
+    description: Optional[str] = Field(description = "General product description", default=None)
+    price: Optional[float] = Field(description = "Product price in dollars", default=None)
+    tax: Optional[float] = Field(description = "Product tax in percentage", default=None)
+    stock: Optional[int] = Field(description = "Product stock in quantity", default=None)
 
 

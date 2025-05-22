@@ -20,16 +20,11 @@ def get_session():
 class ProductRepository:
     def get(self):
         with get_session() as db:
-            return db.query(Product).options(
-            joinedload(Product.auth)).all()
+            return db.query(Product).all()
     
     def get_by_id(self, id: UUID):
         with get_session() as db:
-            return db.query(Product).options(joinedload(Product.auth)).filter(Product.id == id).first()
-    
-    def get_by_auth_identification(self, identification: str):
-        with get_session() as db:
-            return db.query(Product).options(joinedload(Product.auth)).filter(Auth.identification == identification).first()
+            return db.query(Product).filter(Product.id == id).first()
     
     def create(self, product: Product):
         with get_session() as db:

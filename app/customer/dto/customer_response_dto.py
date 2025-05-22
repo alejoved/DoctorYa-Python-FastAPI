@@ -5,5 +5,5 @@ from app.customer.entity.customer import Customer
 
 class CustomerResponseDTO(BaseModel):
     name: Optional[str] = Field(default = None, description = "Customer full name")
-    insurance: Optional[str] = Field(default = None, description = "Name of the heatlh insurance")
+    address: Optional[str] = Field(default = None, description = "Customer full address")
     auth: Optional[AuthResponseDTO] = Field(default = None, description = "Authentication data of the customer")

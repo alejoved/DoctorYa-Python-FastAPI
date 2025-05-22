@@ -5,8 +5,6 @@ from app.common.role import Role
 
 class Auth(Base):
     __tablename__ = "auth"
-    __table_args__ = {"schema": "doctoryapython"}
-
 
     identification = Column(String, primary_key=True, index=True)
     password = Column(String)

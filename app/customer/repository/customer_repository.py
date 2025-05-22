@@ -36,7 +36,10 @@ class CustomerRepository:
             db.add(customer)
             db.flush() 
             db.refresh(customer)
-            return customer
+            customer_with_relations = db.query(Customer).options(
+            joinedload(Customer.auth)
+            ).filter(Customer.id == customer.id).first()
+            return customer_with_relations
     
     def update(self, customer: Customer):
         with get_session() as db:

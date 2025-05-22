@@ -1,23 +1,24 @@
+from typing import List
 from uuid import UUID
 from fastapi import APIRouter, Depends
+from app.customer.repository.customer_repository import CustomerRepository
 from app.invoice.dto.invoice_response_dto import InvoiceResponseDTO
 from app.common.role import Role
 from app.config.auth_config import valid_role
 from app.invoice.dto.invoice_dto import InvoiceDTO
 from app.invoice.repository.invoice_repository import InvoiceRepository
 from app.invoice.service.invoice_service import InvoiceService
-from app.patient.repository.patient_repository import PatientRepository
-from app.physician.repository.physician_repository import PhysicianRepository
+from app.product.repository.product_repository import ProductRepository
 
 invoice_route = APIRouter()
 
 def get_invoice_service():
     invoice_repository = InvoiceRepository()
-    patient_repository = PatientRepository()
-    physician_repository = PhysicianRepository()
-    return InvoiceService(invoice_repository, patient_repository, physician_repository)
+    customer_repository = CustomerRepository()
+    product_repository = ProductRepository()
+    return InvoiceService(invoice_repository, customer_repository, product_repository)
 
-@invoice_route.get("/api/invoice", response_model=InvoiceResponseDTO, response_model_exclude_none=True, tags=["Invoices"],
+@invoice_route.get("/api/invoice", response_model=List[InvoiceResponseDTO], response_model_exclude_none=True, tags=["Invoices"],
                        summary="Get all invoices currently",
                        responses={200: {"description": "Get all invoices successfully"}, 
                                   500: {"description": "Internal server error"}})

@@ -3,7 +3,7 @@ from app.common import constants
 from app.common.mapper import Mapper
 from app.common.role import Role
 from app.config.auth_config import create_token
-from app.exception.exception_handler import credentials_not_valid_exception, entity_exists_exception, entity_not_exists_exception
+from app.exception.exception_handler import credentials_not_valid_exception, entity_exists_exception, entity_not_found_exception
 from app.auth.dto.login_dto import LoginDTO
 from app.auth.dto.register_dto import RegisterDTO
 from app.auth.repository.auth_repository import AuthRepository
@@ -31,7 +31,7 @@ class AuthService:
     def login(self, login_dto: LoginDTO):
         auth = self.auth_repository.get_by_identification(login_dto.identification)
         if not auth:
-            raise entity_not_exists_exception(constants.auth_not_found)
+            raise entity_not_found_exception(constants.auth_not_found)
         if not self.pwd_context.verify(login_dto.password, auth.password):
             raise credentials_not_valid_exception(constants.credentials_not_valid);
         token = create_token(auth.identification, auth.role)

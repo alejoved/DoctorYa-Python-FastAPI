@@ -11,8 +11,7 @@ product_route = APIRouter()
 
 def get_product_service():
     product_repository = ProductRepository()
-    auth_repository = AuthRepository()
-    return ProductService(product_repository, auth_repository)
+    return ProductService(product_repository)
 
 @product_route.get("/api/product", response_model=List[ProductResponseDTO], response_model_exclude_none=True, tags=["Product"],
                     summary="Get all products currently",
@@ -29,15 +28,6 @@ def get(product_service: ProductService = Depends(get_product_service)):
                                 500: {"description": "Internal server error"}})
 def get_by_id(id: UUID, product_service: ProductService = Depends(get_product_service)):
     product_response_dto = product_service.get_by_id(id)
-    return product_response_dto
-
-@product_route.get("/api/product/identification/{identification}", response_model=ProductResponseDTO, response_model_exclude_none=True, tags=["Product"],
-                    summary="Get an product existing by identification",
-                    responses={200: {"description": "Get an product by identification successfully"},
-                                404: {"description": "Product not found"}, 
-                                500: {"description": "Internal server error"}})
-def get_by_identification(identification: str, product_service: ProductService = Depends(get_product_service)):
-    product_response_dto = product_service.get_by_identification(identification)
     return product_response_dto
 
 @product_route.post("/api/product", response_model=ProductResponseDTO, response_model_exclude_none=True, tags=["Product"],
