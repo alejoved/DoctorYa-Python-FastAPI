@@ -149,7 +149,7 @@ minikube service facturaya-app
 
 ## 👤 Autor
 
-Alejandro J. (`alejoved`)  
+Alejandro Aguirre. (`alejoved`)  
 [GitHub](https://github.com/alejoved) • Backend Engineer
 
 ---
