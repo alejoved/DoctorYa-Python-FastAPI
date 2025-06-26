@@ -89,7 +89,7 @@ http://localhost:8000/docs
 
 ```bash
 # Construir imagen
-docker build -t facturaya-app .
+docker build -t facturaya-app:latest .
 
 # Levantar con Docker Compose
 docker-compose up
@@ -102,6 +102,35 @@ docker-compose up
 ```bash
 # Ejecutar pruebas con cobertura
 pytest --cov=app tests/
+```
+---
+
+## ☸️ Despliegue en Kubernetes con Minikube
+
+### ✅ Requisitos
+- [x] Minikube instalado
+- [x] Podman (o Docker)
+- [x] Manifiestos en `k8s/`
+
+### 🚀 Pasos de Despliegue
+```bash
+minikube delete
+minikube start
+minikube addons enable metrics-server
+
+# Crear y exportar imagen
+podman build -t facturaya-app:latest .
+podman save -o facturaya-app.tar doctorya-app:latest
+
+# Cargar imagen en Minikube
+minikube image load facturaya-app.tar
+
+# Aplicar manifiestos K8s
+kubectl apply -f k8s/
+
+# Ver logs o exponer servicio
+kubectl logs <pod-name>
+minikube service facturaya-app
 ```
 
 ---

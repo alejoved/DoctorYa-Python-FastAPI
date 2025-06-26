@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: standard
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: facturaya-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: facturaya-db
+  template:
+    metadata:
+      labels:
+        app: facturaya-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          envFrom:
+            - configMapRef:
+                name: facturaya-db-config
+            - secretRef:
+                name: facturaya-db-secret
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-storage
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: facturaya-db
+spec:
+  type: ClusterIP
+  selector:
+    app: facturaya-db
+  ports:
+    - port: 5432
+      targetPort: 5432
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: facturaya-db-config
+data:
+  POSTGRES_DB: facturaya
+  POSTGRES_USER: postgres
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: facturaya-db-secret
+type: Opaque
+data:
+  POSTGRES_PASSWORD: cm9vdA==

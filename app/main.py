@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI
+from app.init_db import init_db
 from app.auth.controller.auth_controller import auth_route
 from app.customer.controller.customer_controller import customer_route
 from app.product.controller.product_controller import product_route
@@ -10,6 +11,10 @@ app = FastAPI(
     description="Invoice Generation API Technical Documentation",
     version="1.0.0"
 )
+
+@app.on_event("startup")
+async def startup_event():
+    init_db()
 
 app.include_router(auth_route)
 app.include_router(customer_route)
